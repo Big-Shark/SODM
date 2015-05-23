@@ -1,0 +1,20 @@
+{
+    "name": "big-shark/sodm",
+    "description": "Simple ODM for PHP.",
+    "keywords": ["PHP", "ODM", "Mongo"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maxim AKA Big_Shark",
+            "email": "bigshark666@gmail.com"
+        }
+    ],
+        "autoload": {
+        "psr-4": {
+            "Big_Shark\\SODM\\": "Big_Shark/SODM/",
+        }
+    },
+    "require": {
+        "memio/memio" : "~1.0"
+    }
+}
