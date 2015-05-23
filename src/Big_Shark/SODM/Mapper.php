@@ -156,12 +156,13 @@ class Mapper
     /**
      * @param Entity $entity
      * @return Entity
+     * @throws \Exception _id is not allowed on insert action
      */
     public function insert(Entity $entity)
     {
         $array = $entity->toArray();
         if(isset($array['_id']))
-            throw new Exception('Please remove _id');
+            throw new Exception('_id is not allowed on insert action');
 
         $this->getCollection()->insert($array);
 
@@ -175,14 +176,13 @@ class Mapper
     public function save(Entity $entity)
     {
         $array = $entity->toArray();
-        $this->getCollection()->save($array);
-
-        return $entity->fill($array);
+        return isset($array['_id']) ? $this->update($entity) : $this->insert($entity);
     }
 
     /**
      * @param Entity $entity
      * @return Entity
+     * @throws \Exception
      */
     public function update(Entity $entity)
     {
