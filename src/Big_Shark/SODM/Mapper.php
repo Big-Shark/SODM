@@ -44,12 +44,14 @@ class Mapper
     protected function setQuery($query)
     {
         $this->query = $query;
+
         return $this;
     }
 
     protected function resetQuery()
     {
         $this->setQuery([]);
+
         return $this;
     }
 
@@ -61,10 +63,11 @@ class Mapper
     protected function setFields($fields)
     {
         $this->fields = $fields;
+
         return $this;
     }
 
-    protected function generateMongoDBQuery()
+    protected function buildQuery()
     {   
         return $this->getCollection()->find($this->getQuery(), $this->getFields());
     }
@@ -75,7 +78,8 @@ class Mapper
     public function find()
     {
         
-        $result = $this->prepare($this->generateMongoDBQuery()->limit(1)); 
+        $result = $this->prepare($this->buildQuery()->limit(1));
+
         return (isset($result[0]) ? $result[0] : null); 
     }
 
@@ -84,7 +88,7 @@ class Mapper
      */
     public function get()
     {
-        return $this->prepare($this->generateMongoDBQuery());
+        return $this->prepare($this->buildQuery());
     }
 
     /**
@@ -93,6 +97,7 @@ class Mapper
     public function all()
     {
        $this->resetQuery();
+
        return $this->get();
     }
 
@@ -104,6 +109,7 @@ class Mapper
     public function where($key, $value)
     {
        $this->addQueryParametr('where', $key, $value);
+
        return $this;
     }
 
@@ -117,6 +123,7 @@ class Mapper
     {
         //TODO: this is test code;
         $this->query[$key] = $value;
+
         return $this;
     }
 
@@ -136,6 +143,7 @@ class Mapper
             }
             $array[] = $entity;
         }
+
         return $array;
     }
 
@@ -156,6 +164,7 @@ class Mapper
             throw new Exception('Please remove _id');
 
         $this->getCollection()->insert($array);
+
         return $entity->fill($array);
     }
 
@@ -167,6 +176,7 @@ class Mapper
     {
         $array = $entity->toArray();
         $this->getCollection()->save($array);
+
         return $entity->fill($array);
     }
 
@@ -181,6 +191,7 @@ class Mapper
             throw new Exception('Object does not contain _id');
 
         $this->getCollection()->save($array);
+        
         return $entity->fill($array);
     }
 }
