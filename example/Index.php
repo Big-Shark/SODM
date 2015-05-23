@@ -11,8 +11,8 @@ include __DIR__.'/BookMapper.php';
 $m = new MongoClient();
 $db = $m->selectDB('odm');
 
-$UoW = new UoW;
-$mapper = new BookMapper($db, $UoW);
+$identityMap = new IdentityMap;
+$mapper = new BookMapper($db, $identityMap);
 
 $book = new Book(['title' =>'Book'.rand(1,100)]);
 $book->setCreatedAt(time());
@@ -29,10 +29,10 @@ echo '-------------------------'.PHP_EOL;
 
 $book = $mapper->whereTitle('Book15')->find();
 dump($book);
-$book->setTitle('Test UoW');
+$book->setTitle('Test identityMap');
 
 $books = $mapper->whereTitle('Book15')->find();
 dump($book);
 
-dump($UoW);
+dump($identityMap);
 */

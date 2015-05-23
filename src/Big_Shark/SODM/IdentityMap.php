@@ -1,6 +1,6 @@
 <?php
 
-class UoW 
+class IdentityMap 
 {
 
 	protected $container = [];

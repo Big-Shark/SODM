@@ -1,0 +1,94 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+use Memio\Memio\Config\Build;
+use Memio\Model\File;
+use Memio\Model\Object;
+use Memio\Model\Property;
+use Memio\Model\Method;
+use Memio\Model\Argument;
+use Memio\Model\Contract;
+use Memio\Model\Phpdoc\ApiTag;
+use Memio\Model\Phpdoc\Description;
+use Memio\Model\Phpdoc\DeprecationTag;
+use Memio\Model\Phpdoc\MethodPhpdoc;
+use Memio\Model\Phpdoc\ParameterTag;
+use Memio\Model\Phpdoc\PropertyPhpdoc;
+use Memio\Model\Phpdoc\VariableTag;
+
+$fields = ['title' => 'string', 'description' => 'string'];
+
+$defaultFieldArray = "['".implode("', '", array_keys($fields))."']";
+
+$object = Object::make('BaseBook')
+        	->extend(new Object('Entity'))
+            ->addProperty(
+            	Property::make('fields')
+            	->makeProtected()
+            	->setDefaultValue($defaultFieldArray)
+            	->setPhpdoc(
+            		PropertyPhpdoc::make()
+			        ->setVariableTag(new VariableTag('array'))
+			    )
+            );
+
+foreach ($fields as $name => $type) {
+	$object->addMethod(
+                Method::make('get'.ucfirst($name))
+                ->setBody('	return $this->get(\''.$name.'\');')
+                ->setPhpdoc(
+                	MethodPhpdoc::make()
+			        ->setDescription(
+			        	Description::make('Get the '.ucfirst($name))
+			        )
+			    )
+            )
+            ->addMethod(
+                Method::make('set'.ucfirst($name))
+                ->addArgument(new Argument($type , $name))
+                ->setBody('	return $this->set(\''.$name.'\', $'.$name.');')
+                ->setPhpdoc(
+                	MethodPhpdoc::make()
+			        ->setDescription(
+			        	Description::make('Set the '.ucfirst($name))
+			        )
+			        ->addParameterTag(new ParameterTag($type , $name))
+			    )
+            );
+}
+            
+
+// Describe the code you want to generate using "Models"
+$file = File::make(__DIR__.'/../example/BaseBook.php')->setStructure($object);
+
+// Generate the code and display in the console
+$prettyPrinter = Build::prettyPrinter();
+$generatedCode = $prettyPrinter->generateCode($file);
+echo $generatedCode;
+
+
+/*
+if (!class_exists('\Symfony\Component\Console\Application')) {
+	if (file_exists($file = __DIR__.'/../../../autoload.php') || file_exists($file = __DIR__.'/../autoload.php')) {
+		require_once $file;
+	}
+}
+use Symfony\Component\Console\Application;
+use Symfony\Component\Finder\Finder;
+
+
+$finder = new Finder();
+$finder->files()->name('*.php')->in(__DIR__.'/../src/big_shark/sodm/Generators/Command')->depth(0);
+$app = new Application('Propel', Propel::VERSION);
+
+foreach ($finder as $file) {
+	$ns = '\\SODM\\Generators\\Command';
+	$r = new \ReflectionClass($ns.'\\'.$file->getBasename('.php'));
+	
+	if ($r->isSubclassOf('Symfony\\Component\\Console\\Command\\Command') && !$r->isAbstract()) {
+		$app->add($r->newInstance());
+	}
+}
+$app->run();*/

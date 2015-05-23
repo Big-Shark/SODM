@@ -14,19 +14,19 @@ class Mapper
     protected $fields = [];
 
     /*
-    * var UoW
+    * var IdentityMap
     */
-    protected $UoW = null;
+    protected $identityMap = null;
 
     /*
       * var MongoCollection
       */
     protected $db = null;
 
-    function __construct(MongoDB $db, UoW $UoW)
+    function __construct(MongoDB $db, IdentityMap $identityMap)
     {
         $this->db = $db;
-        $this->UoW = $UoW;
+        $this->identityMap = $identityMap;
     }
     /*
      * @return MongoCollection;
@@ -129,10 +129,10 @@ class Mapper
         $entityName = static::$entity;
         $array = [];
         foreach ($cursor as $item) {
-            if( ! ($entity = $this->UoW->getEntity(static::$entity, $item['_id'])))
+            if( ! ($entity = $this->identityMap->getEntity(static::$entity, $item['_id'])))
             {
                 $entity = new $entityName($item);
-                $this->UoW->setEntity($entity);
+                $this->identityMap->setEntity($entity);
             }
             $array[] = $entity;
         }
