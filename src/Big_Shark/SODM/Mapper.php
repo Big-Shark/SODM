@@ -19,7 +19,7 @@ class Mapper
     protected $identityMap = null;
 
     /*
-      * var MongoCollection
+      * var MongoDB
       */
     protected $db = null;
 
@@ -104,7 +104,7 @@ class Mapper
     /**
      * @param String $key
      * @param String $value
-     * @return self
+     * @return $this
      */
     public function where($key, $value)
     {
@@ -117,7 +117,7 @@ class Mapper
      * @param String $type
      * @param String $key
      * @param String $value
-     * @return self
+     * @return $this
      */
     public function addQueryParameter($type, $key, $value)
     {
@@ -191,7 +191,7 @@ class Mapper
             throw new Exception('Object does not contain _id');
 
         $this->getCollection()->save($array);
-        
+
         return $entity->fill($array);
     }
 }
