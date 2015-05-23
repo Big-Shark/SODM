@@ -8,14 +8,14 @@ H1.SODM - Simple object data mapper
 
 Создание обьекта и добавления его в базу.
 ```
-$mapper = new BookMapper($db, $UoW);
+$mapper = new BookMapper($db, $identityMap);
 
 $book = new Book(['title' =>'Book']);
 $mapper->insert($book);
 ```
 или 
 ```
-$mapper = new BookMapper($db, $UoW);
+$mapper = new BookMapper($db, $identityMap);
 
 $book = new Book();
 $book->setTitle('Book');
@@ -28,7 +28,7 @@ $mapper->insert($book);
 
 Получаем все записи
 ```
-$mapper = new BookMapper($db, $UoW);
+$mapper = new BookMapper($db, $identityMap);
 
 $allBooks = $mapper->all();
 foreach($allBooks as $book)
@@ -39,7 +39,7 @@ foreach($allBooks as $book)
 
 Получаем только те записи где тайтл равен SuperBook
 ```
-$mapper = new BookMapper($db, $UoW);
+$mapper = new BookMapper($db, $identityMap);
 
 $books = $mapper->whereTitle('SuperBook')->get();
 foreach($books as $book)
