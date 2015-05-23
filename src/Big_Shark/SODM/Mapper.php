@@ -108,7 +108,7 @@ class Mapper
      */
     public function where($key, $value)
     {
-       $this->addQueryParametr('where', $key, $value);
+       $this->addQueryParameter('where', $key, $value);
 
        return $this;
     }
@@ -119,7 +119,7 @@ class Mapper
      * @param String $value
      * @return self
      */
-    public function addQueryParametr($type, $key, $value)
+    public function addQueryParameter($type, $key, $value)
     {
         //TODO: this is test code;
         $this->query[$key] = $value;
