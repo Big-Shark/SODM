@@ -4,23 +4,23 @@
 class Mapper
 {
     /*
-    * var Query
+    * @var Query
     */
     protected $query = [];
 
     /*
-    * var Fields
+    * @var Fields
     */
     protected $fields = [];
 
     /*
-    * var IdentityMap
+    * @var IdentityMap
     */
     protected $identityMap = null;
 
     /*
-      * var MongoDB
-      */
+    * @var MongoDB
+    */
     protected $db = null;
 
     function __construct(MongoDB $db, IdentityMap $identityMap)
